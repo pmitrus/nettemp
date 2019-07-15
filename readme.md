@@ -28,26 +28,24 @@ Debian, RaspberryPi:
 	download and run like root, script will install all requirements like php, www.
 
 	mkdir -p /var/www/nettemp && cd /var/www
+	sudo apt update -y
+	sudo apt-get upgrade -ymc
+	
 	sudo apt-get -y install git
-	git clone https://github.com/mariano78/nettemp
-	cd nettemp && ./install_nettemp
-
-BETA:
-
-	mkdir -p /var/www/nettemp && cd /var/www 
-	apt-get update && apt-get install -y git
 	git clone https://github.com/mariano78/nettemp
 	cd nettemp && git checkout betamm && ./install_nettemp
 	
 	or all in one line
-	
-	mkdir -p /var/www/nettemp && cd /var/www && apt-get update && apt-get install -y git && git clone https://github.com/mariano78/nettemp && cd nettemp && git checkout betamm && ./install_nettemp   
 
-
-
-
+	mkdir -p /var/www/nettemp && cd /var/www && apt update -y && apt-get upgrade -y && apt-get install -y git && git clone https://github.com/mariano78/nettemp && cd nettemp && git checkout betamm && ./install_nettemp 	
 
 Changelog:
+
+4.8.5
+
+Status refresh every 10 seconds - only if base was modified, only for sensors
+Clean code
+New links to forum - nettemp.tk
 
 4.8.4
 

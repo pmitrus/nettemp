@@ -2,10 +2,13 @@
 
 
 {
-git clone git://git.drogon.net/wiringPi 
+mkdir wiringPi
 cd wiringPi
-./build
+wget https://project-downloads.drogon.net/wiringpi-latest.deb
+dpkg -i wiringpi-latest.deb
+ln -s /usr/bin/gpio /usr/local/bin/
 cd $dir
+
 } >> $dir/install_log.txt 2>&1
 
 exitstatus=$?
