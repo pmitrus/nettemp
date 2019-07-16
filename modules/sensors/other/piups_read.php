@@ -115,7 +115,7 @@ try {
 					
 				} elseif (($local_rom == 'UPS_id9') && ($local_val == '0')) {
 					
-						echo "Power 230 on\n";
+						echo "Power 230V is on\n";
 						if ($count == '1') {
 							
 							$db->exec("UPDATE nt_settings SET value='0' WHERE option='ups_count'");
