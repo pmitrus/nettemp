@@ -3,7 +3,8 @@ $ROOT=dirname(dirname(dirname(dirname(__FILE__))));
 $date = date("Y-m-d H:i:s");
 define("LOCAL","local");
 
-include("$ROOT/common/functions.php");
+//include("$ROOT/common/functions.php");
+include("$ROOT/receiver.php");
 
 //function logs($content){
 //global $ROOT;
@@ -53,7 +54,7 @@ try {
     exit;
 }
 
-    include("$ROOT/receiver.php");
+    
 	$cmd=("exec 3<$dev && echo -n 'D\r' >$dev && head -1 <&3; exec 3<&-");
     $out=shell_exec($cmd);
     $out=trim($out);
