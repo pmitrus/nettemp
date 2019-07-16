@@ -3,14 +3,16 @@ $ROOT=dirname(dirname(dirname(dirname(__FILE__))));
 $date = date("Y-m-d H:i:s");
 define("LOCAL","local");
 
-function logs($content){
-global $ROOT;
+include("common/functions.php");
 
-	$f = fopen("$ROOT/tmp/piups_log.txt", "a");
+//function logs($content){
+//global $ROOT;
 
-fwrite($f, $content);
-fclose($f); 
-}
+	//$f = fopen("$ROOT/tmp/piups_log.txt", "a");
+
+//fwrite($f, $content);
+//fclose($f); 
+//}
 
 $db = new PDO("sqlite:$ROOT/dbf/nettemp.db");
 
@@ -46,8 +48,8 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 } catch (Exception $e) {
     echo $date." Could not connect to the database.\n";
-	$content = date('Y M d H:i:s')." -"." Could not connect to the database.\n";
-	logs($content);
+	//$content = date('Y M d H:i:s')." -"." Could not connect to the database.\n";
+	logs(date("Y-m-d H:i:s"),'Error'," PiUPS - Could not connect to the database.");
     exit;
 }
 
@@ -65,8 +67,9 @@ try {
     if( count($data) != count($types) ){
         echo "Different number of array elements!\n";
 		
-		$content = date('Y M d H:i:s')." -"." Different number of array elements!\n";
-		logs($content);
+		//$content = date('Y M d H:i:s')." -"." Different number of array elements!\n";
+		logs(date("Y-m-d H:i:s"),'Error'," PiUPS - Different number of array elements!");
+		
 		
         exit;
     }else{
@@ -83,8 +86,8 @@ try {
 			if (($local_rom == 'UPS_id9') && ($local_val == '1')) {
 				
 					echo "Power 230 off\n";
-					$content = date('Y M d H:i:s')." -"." Power 230 is off\n";
-					logs($content);
+					//$content = date('Y M d H:i:s')." -"." Power 230 is off\n";
+					logs(date("Y-m-d H:i:s"),'Info'," PiUPS - Power 230 is off !");
 										
 					if ($count == '1') {
 						
@@ -94,16 +97,18 @@ try {
 							 
 							 $db->exec("UPDATE nt_settings SET value='0' WHERE option='ups_count'");
 							 
-							 $content = date('Y M d H:i:s')." -"." Power 230V is off. Rpi shutdown now. \n";
-							 logs($content);
+							 //$content = date('Y M d H:i:s')." -"." Power 230V is off. Rpi shutdown now. \n";
+							 logs(date("Y-m-d H:i:s"),'Info'," PiUPS - Power 230V is off. Rpi shutdown now. !");
+							 //logs($content);
 							 
 							 
 							 system ("sudo /sbin/shutdown -h now");
 							 							 
 							 } else {
 									echo "--- Malina ON ---\n"; echo time(); echo " "; echo $tshutdown."\n";  
-									$content = date('Y M d H:i:s')." -"." Power 230V is off. Rpi counts the time to shutdown system.\n";
-									logs($content);
+									//$content = date('Y M d H:i:s')." -"." Power 230V is off. Rpi counts the time to shutdown system.\n";
+									logs(date("Y-m-d H:i:s"),'Info'," PiUPS - Power 230V is off. Rpi counts the time to shutdown system. !");
+									//logs($content);
 									}
 						 
 					}else {
@@ -118,8 +123,9 @@ try {
 					 $db->exec("UPDATE nt_settings SET value='$timewhenoff' WHERE option='ups_toff_stop'");
 					 $db->exec("UPDATE nt_settings SET value='1' WHERE option='ups_count'");
 					 
-					$content = date('Y M d H:i:s')." -"." Power 230V is off. Rpi counts the time to shutdown system.\n";
-					logs($content);
+					//$content = date('Y M d H:i:s')." -"." Power 230V is off. Rpi counts the time to shutdown system.\n";
+					logs(date("Y-m-d H:i:s"),'Info'," PiUPS - Power 230V is off. Rpi counts the time to shutdown system. !");
+					//logs($content);
 					}
 					
 				} elseif (($local_rom == 'UPS_id9') && ($local_val == '0')) {
@@ -140,8 +146,9 @@ try {
 					
 					$db->exec("UPDATE nt_settings SET value='0' WHERE option='ups_count'");
 					echo "Battery discharged. Rpi goes to sleep.\n";
-					$content = date('Y M d H:i:s')." -"." Battery discharged. Rpi shutdown now.\n";
-					logs($content);
+					//$content = date('Y M d H:i:s')." -"." Battery discharged. Rpi shutdown now.\n";
+					logs(date("Y-m-d H:i:s"),'Info'," PiUPS - Battery discharged. Rpi shutdown now. !");
+					//logs($content);
 					system ("sudo /sbin/shutdown -h now");
 					
 				}
