@@ -3,7 +3,7 @@ $ROOT=dirname(dirname(dirname(dirname(__FILE__))));
 $date = date("Y-m-d H:i:s");
 define("LOCAL","local");
 
-include("common/functions.php");
+include("$ROOTcommon/functions.php");
 
 //function logs($content){
 //global $ROOT;
