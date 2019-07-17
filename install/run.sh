@@ -22,8 +22,8 @@ source install/www/www.sh
 source install/crontab/crontab.sh
 source install/db/db.sh
 source install/perms/perms.sh
-source install/vpn/vpn.sh
 source install/services/services.sh
+source install/vpn/vpn.sh
 
 
 if [[ "$SENDSTATS" == "yes" ]]; then
