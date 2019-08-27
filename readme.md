@@ -29,7 +29,7 @@ Debian, RaspberryPi:
 
 	mkdir -p /var/www/nettemp && cd /var/www
 	sudo apt update -y
-	sudo apt-get upgrade -ymc
+	sudo apt-get upgrade -y
 	
 	sudo apt-get -y install git
 	git clone https://github.com/mariano78/nettemp
@@ -40,6 +40,13 @@ Debian, RaspberryPi:
 	mkdir -p /var/www/nettemp && cd /var/www && apt update -y && apt-get upgrade -y && apt-get install -y git && git clone https://github.com/mariano78/nettemp && cd nettemp && git checkout betamm && ./install_nettemp 	
 
 Changelog:
+
+4.8.6
+
+SDM630 Fix 
+On/Off refresh for charts
+NVD3 Fix
+BME280 Fix
 
 4.8.5
 
