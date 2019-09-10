@@ -25,11 +25,11 @@ foreach ($hide_resc as $hc) {
 //logon or logoff
 if(($_SESSION["perms"] == 'adm') || (isset($_SESSION["user"]))) {
 
-	$rows = $db->query("SELECT * FROM sensors WHERE hide ='off' AND  (type='gas' OR type='elec' OR type='water')");
+	$rows = $db->query("SELECT * FROM sensors WHERE hide ='off' AND  (type='gas' OR type='elec' OR type='water') ORDER BY position ASC");
 	
 } else { 
 
-	$rows = $db->query("SELECT * FROM sensors WHERE hide ='off' AND logon ='on' AND (type='gas' OR type='elec' OR type='water')");
+	$rows = $db->query("SELECT * FROM sensors WHERE hide ='off' AND logon ='on' AND (type='gas' OR type='elec' OR type='water') ORDER BY position ASC");
 	
 	}
 	
@@ -39,7 +39,15 @@ if ( $numRows > '0' ) { ?>
 <div class="grid-item co">
 <div class="panel panel-default">
 <div class="panel-heading"> 
-<div class="pull-left">Counters</div>
+<div class="pull-left">
+	<?php
+		if(isset($_SESSION['user'])){
+							echo '<a href="index.php?id=device&type=counters" title="Go to counters" class="group-name" >'.'Counters'.'</a>';
+						} else {
+							echo 'Counters';
+						}
+	?>
+</div>
 <div class="pull-right">
 		<div class="text-right">
 			 <form action="" method="post" style="display:inline!important;">

@@ -382,6 +382,29 @@ if ( $lcd == "lcd"){
     header("location: " . $_SERVER['REQUEST_URI']);
     exit();
     }
+	
+	$dptempbindsensor = isset($_POST['dptempbindsensor']) ? $_POST['dptempbindsensor'] : '';
+	$dphumbindsensor = isset($_POST['dphumbindsensor']) ? $_POST['dphumbindsensor'] : '';
+    $dp_id = isset($_POST['dp_id']) ? $_POST['dp_id'] : '';
+	$cht_bsensor = isset($_POST['cht_bsensor']) ? $_POST['cht_bsensor'] : '';
+	
+	if (!empty($dp_id) && $cht_bsensor == "cht_bsensorok"){
+    $db = new PDO('sqlite:dbf/nettemp.db');
+    $db->exec("UPDATE sensors SET dpromtemp='$dptempbindsensor', dpromhumid='$dphumbindsensor' WHERE id='$dp_id'") or die ($db->lastErrorMsg());
+    header("location: " . $_SERVER['REQUEST_URI']);
+    exit();
+    } 
+	
+	$dphumbindsensor = isset($_POST['dphumbindsensor']) ? $_POST['dphumbindsensor'] : '';
+    $dp_id = isset($_POST['dp_id']) ? $_POST['dp_id'] : '';
+	$chh_bsensor = isset($_POST['chh_bsensor']) ? $_POST['chh_bsensor'] : '';
+	
+	if (!empty($dp_id) && $chh_bsensor == "cht_bsensorok"){
+    $db = new PDO('sqlite:dbf/nettemp.db');
+    $db->exec("UPDATE sensors SET dpromhumid='$dphumbindsensor' WHERE id='$dp_id'") or die ($db->lastErrorMsg());
+    header("location: " . $_SERVER['REQUEST_URI']);
+    exit();
+    } 
     
 ?> 
 
