@@ -31,6 +31,7 @@ if(!empty($rom) && ($usun2 == "usun3")) {
 	$db->exec("DELETE FROM hosts WHERE rom='$rom'");
 	$db->exec("DELETE FROM sensors WHERE rom='$rom'");
 	$db->exec("DELETE FROM notifications WHERE rom='$rom'");
+	$db->exec("DELETE FROM snmp WHERE rom='$rom'");
 	
 	if (file_exists("db/$rom.sql")) {
         unlink("db/$rom.sql");
@@ -194,6 +195,15 @@ if ( $lcd == "lcd"){
     $th_on = isset($_POST['th_on']) ? $_POST['th_on'] : '';
     if ($th_on == "th_on"){
     $db->exec("UPDATE sensors SET thing='$thing_on' WHERE id='$thing_id'") or die ($db->lastErrorMsg());
+    header("location: " . $_SERVER['REQUEST_URI']);
+    exit();
+    }
+	
+	$savebase_id = isset($_POST['savebase_id']) ? $_POST['savebase_id'] : '';
+    $savebase_on = isset($_POST['savebase_on']) ? $_POST['savebase_on'] : '';
+    $tobase_on = isset($_POST['tobase_on']) ? $_POST['tobase_on'] : '';
+    if ($tobase_on == "tobase_on"){
+    $db->exec("UPDATE sensors SET tobase='$savebase_on' WHERE id='$savebase_id'") or die ($db->lastErrorMsg());
     header("location: " . $_SERVER['REQUEST_URI']);
     exit();
     }
