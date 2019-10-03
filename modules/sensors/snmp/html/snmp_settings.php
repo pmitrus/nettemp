@@ -24,9 +24,14 @@ $snmp_add1 = isset($_POST['snmp_add1']) ? $_POST['snmp_add1'] : '';
 	$rom="snmp_".$snmp_name."_".$snmp_type;
 	$map_num=substr(rand(), 0, 4);
 	$db->exec("INSERT OR IGNORE INTO snmp (name, rom, community, host, oid, divider, type, version ) VALUES ('$snmp_name','$rom','$snmp_community', '$snmp_host', '$snmp_oid', '$snmp_divider', '$snmp_type', '$snmp_version')") or die ("cannot insert to DB 1" );
-	$dbn->exec("INSERT OR IGNORE INTO newdev (list) VALUES ('$rom')");
+	//$dbn->exec("INSERT OR IGNORE INTO newdev (list) VALUES ('$rom')");
     $dbn->exec("INSERT OR IGNORE INTO sensors (name, rom, type, tmp, device, adj, charts, position, ch_group, ghide, hide, readerrtime, tobase) VALUES ('$snmp_name','$rom','$snmp_type', 'wait', 'snmp', 0, 'on', '1', 'snmp', 'off', 'off', '60', 'on')") or die ("cannot insert to DB 2" );
-
+	
+	//maps settings
+	$inserted=$db->query("SELECT id FROM sensors WHERE rom='$rom'");
+	$inserted_id=$inserted->fetchAll();
+	$inserted_id=$inserted_id[0];
+	$db->exec("INSERT OR IGNORE INTO maps (type, map_pos, map_num,map_on,element_id) VALUES ('sensors','{left:0,top:0}','$map_num','on','$inserted_id[id]')") or die ("Update maps error");
 
 	$dbnew = new PDO("sqlite:db/$rom.sql");
 	$dbnew->exec("CREATE TABLE def (time DATE DEFAULT (datetime('now','localtime')), value INTEGER, current INTEGER, last INTEGER)");
@@ -36,6 +41,8 @@ $snmp_add1 = isset($_POST['snmp_add1']) ? $_POST['snmp_add1'] : '';
 	}	
 	elseif ($snmp_add1 == "snmp_add2") { echo " Please input name, community, host and oid"; }
 	?>
+	
+	
 	
 	<?php 
 	$notif_update1 = isset($_POST['notif_update1']) ? $_POST['notif_update1'] : '';
@@ -50,14 +57,7 @@ $snmp_add1 = isset($_POST['snmp_add1']) ? $_POST['snmp_add1'] : '';
 	 ?>
 	
 
-<?php // SQLite - del
-	if (!empty($snmp_id) && ($_POST['snmp_del1'] == "snmp_del2") ){
-	$db->exec("DELETE FROM snmp WHERE id='$snmp_id'") or die ($db->lastErrorMsg());
-	$dbn->exec("DELETE FROM newdev WHERE list='$snmp_name'"); 
-	header("location: " . $_SERVER['REQUEST_URI']);
-	exit();
-	}
-	?>
+
 
 <div class="panel panel-default">
 <div class="panel-heading">Add sensor over SNMP</div>
@@ -106,22 +106,17 @@ $result = $sth->fetchAll();
 foreach ($result as $a) { 
 ?>
 	<tr>
-	<td><img src="media/ico/snmp-icon.png" ></td>
-	<td><?php echo $a["name"];?></td>
-	<td><?php echo $a["community"];?></td>
-	<td><?php echo $a["version"];?></td>
-	<td><?php echo $a["host"]; ?></td>
-	<td><?php echo $a["oid"]; ?></td>
-	<td><?php echo $a["divider"]; ?></td>
-	<td><?php echo $a["type"]; ?></td>
 	
-
-	<form action="" method="post">
-	<input type="hidden" name="snmp_id" value="<?php echo $a["id"]; ?>"/>
-	<input type="hidden" name="snmp_name" value="<?php echo $a["name"]; ?>"/>
-	<input type="hidden" type="submit" name="snmp_del1" value="snmp_del2" />
-	<td><button class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span> </button></td>
-	</form>
+		<td><img src="media/ico/snmp-icon.png" ></td>
+		<td><?php echo $a["name"];?></td>
+		<td><?php echo $a["community"];?></td>
+		<td><?php echo $a["version"];?></td>
+		<td><?php echo $a["host"]; ?></td>
+		<td><?php echo $a["oid"]; ?></td>
+		<td><?php echo $a["divider"]; ?></td>
+		<td><?php echo $a["type"]; ?></td>
+		<td></td>
+	
 	</tr>
 <?php 
     }
