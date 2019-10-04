@@ -14,7 +14,6 @@ fi
 db=`ls $dir/db/`
 if [[ -z "$db" ]]; then 
 echo "INFO: no sensors added"
-exit
 fi
 
 php-cgi -f $dir/modules/sensors/i2c/i2c_read.php
