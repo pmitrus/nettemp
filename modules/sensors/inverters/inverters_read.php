@@ -158,6 +158,17 @@ try {
 								$local_val = 0;
 								$local_type = 'frequency';
 								db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
+								
+									if( $date->format( 'H') == 18 && $date->format( 'i') == 45) {
+										
+										// Day Energy - reset if midnight
+										
+										$local_rom = $rom."_day";
+										$local_val = 0;
+										$local_type = 'kwatt';
+										db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
+									}
+								
 							}
 
 				}		
@@ -220,6 +231,16 @@ try {
 						$local_val = 0;
 						$local_type = 'watt';
 						db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
+						
+						if( $date->format( 'H') == 00 && $date->format( 'i') == 0) {
+										
+							//Day Energy
+						
+							$local_rom = $rom."_day";
+							$local_val = 0;
+							$local_type = 'kwatt';
+							db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
+						}
 						
 					}
 	
