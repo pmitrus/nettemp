@@ -232,8 +232,8 @@ try {
 						$local_type = 'watt';
 						db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
 
-						$current_time = strtotime('now');
-									if ($current_time > strtotime('19:00') && $current_time < strtotime('19:55')) {
+						$current_time = strtotime("now");
+									if ($current_time > strtotime("19:00") && $current_time < strtotime("19:55")) {
 										
 							//Day Energy
 						
