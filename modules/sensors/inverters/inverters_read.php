@@ -159,8 +159,7 @@ try {
 								$local_type = 'frequency';
 								db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
 								
-								$current_time = strtotime('now');
-									if ($current_time > strtotime('12:00am') && $current_time < strtotime('00:05am')) {
+									if( $date->format( 'H') == 18 && $date->format( 'i') == 36) {
 										
 										// Day Energy - reset if midnight
 										
@@ -232,17 +231,7 @@ try {
 						$local_val = 0;
 						$local_type = 'watt';
 						db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
-						
-						$current_time = strtotime('now');
-									if ($current_time > strtotime('18:00pm') && $current_time < strtotime('18:55pm')) {
-										
-							//Day Energy
-						
-							$local_rom = $rom."_day";
-							$local_val = 0;
-							$local_type = 'kwatt';
-							db($local_rom,$local_val,$local_type,$local_device,$local_current,$local_ip,$local_gpio,$local_i2c,$local_usb,$local_name);
-						}
+
 						
 					}
 	
