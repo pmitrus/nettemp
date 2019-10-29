@@ -158,8 +158,11 @@ if( count($groups) > 0 ){
 	$sth = $db->prepare("select rom,grpkey from lcd_group_assign WHERE grpkey = '$edit'") or die ($err."<pre>".print_r($db->errorInfo(), true)."</pre>");
 	$sth->execute();
 	$result = $sth->fetchAll();
+	$active = array();
 	foreach ($result as $n) {
 	    $active[$n['rom']]=$n['grpkey'];
+		echo "avtive - ".$active[$n['rom']]."active2 - ".$n['grpkey'];
+		//echo $n['grpkey'];
 	}
 ?>
 	<div class="table-responsive">
@@ -193,10 +196,10 @@ if( count($groups) > 0 ){
 ?>
 	<div class="panel-footer">
 <?php
-	$sth = $db->prepare("select server_key from settings WHERE id='1'");
+	$sth = $db->prepare("select value from nt_settings WHERE option = 'server_key'");
 	$sth->execute();
 	$result = $sth->fetch();
-	$skey=$result['server_key'];
+	$skey=$result['value'];
 ?>
 	<span id="helpBlock" class="help-block">Server key is: <b><?php echo $skey ?></b></span>
 	<span id="helpBlock" class="help-block"></span>
