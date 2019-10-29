@@ -1,5 +1,9 @@
 <?php
-session_start();
+//session_start();
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if (isset($_GET['ch_g'])) { 
     $ch_g = $_GET['ch_g'];
@@ -122,7 +126,7 @@ if ($hide == 'off') {
 	
 		foreach($result_t as $ty){
        	if($ty['type']==$a['type']){
-     			if($nts_temp_scale == 'F'){
+     			if(  $_SESSION['nts_temp_scale'] == 'F'){
        			$unit=$ty['unit2'];
        		} else {
 				
