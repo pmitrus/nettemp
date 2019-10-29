@@ -161,8 +161,6 @@ if( count($groups) > 0 ){
 	$active = array();
 	foreach ($result as $n) {
 	    $active[$n['rom']]=$n['grpkey'];
-		echo "avtive - ".$active[$n['rom']]."active2 - ".$n['grpkey'];
-		//echo $n['grpkey'];
 	}
 ?>
 	<div class="table-responsive">
