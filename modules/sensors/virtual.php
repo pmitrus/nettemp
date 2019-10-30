@@ -1,5 +1,6 @@
 <?php
 $ROOT=dirname(dirname(dirname(__FILE__)));
+define("LOCAL","local");
  
 include("$ROOT/receiver.php");	
 
