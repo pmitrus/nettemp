@@ -1,5 +1,6 @@
 <?php
 $ROOT=dirname(dirname(dirname(__FILE__)));
+define("LOCAL","local");
 $date = date("Y-m-d H:i:s"); 
 include("$ROOT/receiver.php");
 

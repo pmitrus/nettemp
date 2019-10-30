@@ -1,6 +1,7 @@
 <?php
 
 $ROOT=dirname(dirname(dirname(dirname(__FILE__))));
+define("LOCAL","local");
 $date = date("Y-m-d H:i:s"); 
 $hour = date("H"); 
 $minute = date("i"); 
