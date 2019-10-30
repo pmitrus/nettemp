@@ -12,7 +12,7 @@ $log_del = isset($_POST['log_del']) ? $_POST['log_del'] : '';
 	echo $dir; 
 	
 	$db2->exec("DELETE FROM logs");
-	$db2->exec("vacuum") or die ("No vacuum." );
+	$db2->exec("vacuum");
 	header("location: " . $_SERVER['REQUEST_URI']);
 	exit();
 	 } 
