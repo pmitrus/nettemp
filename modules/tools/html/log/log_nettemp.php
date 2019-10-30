@@ -3,6 +3,7 @@
 $ROOT=dirname(dirname(dirname(dirname(dirname(__FILE__)))));
 
 $db = new PDO("sqlite:$ROOT/dbf/nettemp.db");
+$db2 = new PDO("sqlite:$ROOT/dbf/nettemp_log.db");
 
 $dir = '';
 $log_del = isset($_POST['log_del']) ? $_POST['log_del'] : '';
@@ -10,8 +11,8 @@ $log_del = isset($_POST['log_del']) ? $_POST['log_del'] : '';
 	exec("echo log cleared > tmp/log.txt");	
 	echo $dir; 
 	
-	$db->exec("DELETE FROM logs");
-	$db->exec("vacuum") or die ("No vacuum." );
+	$db2->exec("DELETE FROM logs");
+	$db2->exec("vacuum") or die ("No vacuum." );
 	header("location: " . $_SERVER['REQUEST_URI']);
 	exit();
 	 } 
@@ -51,7 +52,7 @@ $last = array_slice($filearray,-100);
     foreach($last as $f){
     	echo $f;
     }	
-	$query = $db->query("SELECT * FROM logs");
+	$query = $db2->query("SELECT * FROM logs");
     $result= $query->fetchAll();
 	
     foreach($result as $log) {

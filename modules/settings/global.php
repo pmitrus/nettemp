@@ -157,13 +157,19 @@
     header("location: " . $_SERVER['REQUEST_URI']);
     exit();
     }
+	
+	$logs_type = isset($_POST['logs_type']) ? $_POST['logs_type'] : '';
+    $set_log_type = isset($_POST['set_log_type']) ? $_POST['set_log_type'] : '';
+    if ($set_log_type == "set_log_type") {
+    $db->exec("UPDATE nt_settings SET value='$logs_type' WHERE option='logs_type'") or die ($db->lastErrorMsg());
+    header("location: " . $_SERVER['REQUEST_URI']);
+    exit();
+    }
 
 
 ?>
 
 
-
- 
  <div class="grid-item settings">
 	<div class="panel panel-default">
 		<div class="panel-heading">Global settings</div>
@@ -328,13 +334,32 @@
 			</tr>
 			
 			<tr>
-				<td><label>Logs History</label>
+				<td><label>Logs history</label>
 				</td>
 				<td>
 					<form action="" method="post" style="display:inline!important;"> 
 					<input type="text" name="logs_his" size="1" value="<?php echo $nts_his_logs; ?>" /><label>&nbsp days</label>
 					<input type="hidden" name="logs_his1" value="logs_his1"  />
 					<button class="btn btn-xs btn-success"><span class="glyphicon glyphicon-pencil"></span> </button>
+					</form>
+				</td>
+			</tr>
+			
+			<tr>
+				<td><label>Logs type</label>
+				</td>
+				<td>
+				
+					<form action="" method="post" style="display:inline!important;"> 
+					<fieldset>
+						<select  name="logs_type" onchange="this.form.submit()" class="form-control input-sm">
+						<?php $ar=array("All","Errors");
+						 foreach ($ar as $ltype) { ?>
+							<option <?php echo $nts_logs_type == "$ltype" ? 'selected="selected"' : ''; ?> value="<?php echo $ltype; ?>"><?php echo $ltype ." "; ?></option>   
+						<?php } ?>
+						</select>
+					</fieldset>
+					<input type="hidden" name="set_log_type" value="set_log_type" />
 					</form>
 				</td>
 			</tr>
