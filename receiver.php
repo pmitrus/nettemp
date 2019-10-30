@@ -367,7 +367,7 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 					else {
 						$dbr->exec("UPDATE sensors SET tmp='$val', status='ok', ip='$ip' WHERE rom='$rom'") or die (date("Y-m-d H:i:s")." ERROR: Cannot insert value to status\n" );
 						echo $rom." Value updated to sensors\n";
-						logs(date("Y-m-d H:i:s"),'Info',$rom." - Value updated sensors - ".$val);
+						logs(date("Y-m-d H:i:s"),'Info',$rom." - Value in sensors updated - ".$val);
 						
 						//minmax light
 						if ($val<$stat_min || empty($stat_min)) {$dbr->exec("UPDATE sensors SET stat_min='$val' WHERE rom='$rom'");
@@ -442,8 +442,8 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 
 if (("$key" != "$skey") && (!defined('LOCAL')))
 {
-    echo "wrong key\n";
-	logs(date("Y-m-d H:i:s"),'Error',"Receiver - wrong key - ".$key.$rom);
+    //echo "wrong key\n";
+	//logs(date("Y-m-d H:i:s"),'Error',"Receiver - wrong key - ".$key.$rom);
 } 
 else {
 
