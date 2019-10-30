@@ -404,7 +404,7 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 						
 						$dbfr->exec("INSERT OR IGNORE INTO def (value) VALUES ('0')") or die (date("Y-m-d H:i:s")." ERROR: Cannot insert to rom DB ".$rom.", not numeric\n");
 						echo date("Y-m-d H:i:s")." Puting value \"".$val."\" to ".$rom.", but value is not numieric!, inserting 0 to db\n";
-						logs(date("Y-m-d H:i:s"),'Error',$rom." - Value is not numeric - inserting 0 to database ");
+						logs(date("Y-m-d H:i:s"),'Info',$rom." - Value is not numeric - inserting 0 to database ");
 					}
 				}
 			}
