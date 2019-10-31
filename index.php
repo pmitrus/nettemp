@@ -17,6 +17,7 @@ if( !file_exists($dbfile) || !is_readable($dbfile) || filesize($dbfile) == 0 ){
 //variables in session
 $_SESSION['nts_charts_max'] = $nts_charts_max;
 $_SESSION['nts_temp_scale'] = $nts_temp_scale;
+$_SESSION['nts_theme'] = $nts_theme;
 
 ?>
 <!DOCTYPE html>
@@ -29,10 +30,20 @@ $_SESSION['nts_temp_scale'] = $nts_temp_scale;
     <title>nettemp <?php echo gethostname(); ?></title>
 
     <!-- Bootstrap -->
-    <link href="html/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="html/custom.css" rel="stylesheet">
+	<?php
+		if ($_SESSION['nts_theme'] == 'Default'){ ?>
+	
+			<link href="html/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+			<!-- Custom styles for this template -->
+			<link href="html/custom.css" rel="stylesheet">
+		<?php } else if ($_SESSION['nts_theme'] == 'Dark'){ ?>
+		
+			<link href="html/bootstrap/css/dark_bootstrap.min.css" rel="stylesheet">
+			<!-- Custom styles for this template -->
+			<link href="html/dark_custom.css" rel="stylesheet">
+		<?php }
+	
+	?>
 
     <!-- jQuery -->
     <script src="html/jquery/jquery-1.11.3.min.js"></script>
@@ -150,11 +161,11 @@ if($nts_info=='on') {
     }
 		if(isset($_SESSION["user"])) {?>
 	<form method="post" action="index.php?id=logout" class="navbar-form navbar-right" >
-	    <?php echo $_SESSION["user"];?>
+	    <label><?php echo $_SESSION["user"];?></label>
 	    <button type="submit" class="btn btn-xs btn-success">Log Out</button>
 	</form>
 	<form action="" method="post" class="navbar-form navbar-right">
-		Remember me:
+		<label>Remember me:</label>
 		<input type="checkbox" data-toggle="toggle" data-size="mini" name="autologout_value" value="on" <?php echo $autologout == 'on' ? 'checked="checked"' : ''; ?> onchange="this.form.submit()" />
 		<input type="hidden" name="setautologout" value="onoff" />
     </form>
