@@ -55,6 +55,8 @@ php-cgi -f $dir/modules/sensors/node.php
 php-cgi -f $dir/modules/sensors/send_domoticz.php
 #PV Inverters
 php-cgi -f $dir/modules/sensors/inverters/inverters_read.php
+#node influxdb
+php-cgi -f $dir/modules/sensors/send_influxdb.php
 
 
 
