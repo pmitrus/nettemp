@@ -45,9 +45,6 @@ Changelog:
 
 InfluxDB export - thanks for @mitrus
 Mail fix - double from header
- 
-
-Dark theme for nettemp
 
 4.9.1
 
