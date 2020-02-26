@@ -4,7 +4,6 @@
 
 InfluxDB export - thanks for @mitrus
 Mail fix - double from header
->>>>>>> Stashed changes
 
 4.9.1
 
