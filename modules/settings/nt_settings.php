@@ -236,6 +236,15 @@ foreach ($result as $a) {
     if($a['option']=='inflbase') {
        	$nts_infl_base=$a['value'];
     }
+<<<<<<< HEAD
+=======
+	if($a['option']=='inflbaseuser') {
+       	$nts_infl_log=$a['value'];
+    }
+	if($a['option']=='inflbasepassword') {
+       	$nts_infl_pass=$a['value'];
+    }
+>>>>>>> betamm-upstream
 	
 }
 
