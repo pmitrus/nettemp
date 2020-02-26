@@ -60,7 +60,7 @@ Go to device scan!
 		
 		if ($module == "Sensors") {
 			 //GROUPS
-			$rows = $db->query("SELECT ch_group,type FROM sensors ORDER BY position_group ASC") or header("Location: html/errors/db_error.php");
+			$rows = $db->query("SELECT ch_group FROM sensors ORDER BY position_group ASC") or header("Location: html/errors/db_error.php");
 			$result_ch_g = $rows->fetchAll();
 			$unique=array();
 			$uniquea=array();
@@ -76,7 +76,7 @@ Go to device scan!
 		}else if ($module == "Just Gage") {
 			
 			//JG GROUPS
-			$rows = $db->query("SELECT ch_group,type FROM sensors ORDER BY position_group ASC") or header("Location: html/errors/db_error.php");
+			$rows = $db->query("SELECT ch_group FROM sensors ORDER BY position_group ASC") or header("Location: html/errors/db_error.php");
 			$result_ch_g = $rows->fetchAll();
 			//$unique=array();
 			$uniquea=array();
