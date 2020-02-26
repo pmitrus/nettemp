@@ -67,7 +67,7 @@ $nomail = 0;
 		//logs($date,'Error','Cannot send mail because user doesnt have email, go to settings - users.'); 
 		
 	}
-	
+	else {
     $string = rtrim(implode(' ', $get_addr), ',');
     $addr = rtrim(implode(' ', $get_addr), ',');
     
@@ -88,6 +88,7 @@ $nomail = 0;
 	$headers = "From: ".$a['user']."\r\n";
 	$headers .= "MIME-Version: 1.0" . "\r\n";
 	$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+}
 	
 	function message($notname,$notmessage,$date,$color)
 	{
