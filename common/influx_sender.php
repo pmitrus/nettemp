@@ -43,19 +43,15 @@ function sendInflux($s_value, $s_current, $rom, $name, $type){
     	if(!empty($influxdb_ip) && !empty($influxdb_port) && !empty($influxdb_base) && $influxdb_on == 'on'){
 			
 			$url = "http://$influxdb_ip:$influxdb_port/write?db=$influxdb_base";
-	
 
          $value=floatval($s_value);
-		 
-         
-         
+	    
 			if (isset($s_current) && is_numeric($s_current)) {
 				
 				$points = "nt_$type,name=$name,rom=$rom current=$s_current,value=$value";	
 			}               
 			else {
-				$points = "nt_$type,name=$name,rom=$rom value=$value";
-	               
+				$points = "nt_$type,name=$name,rom=$rom value=$value";     
 			}
 		  
 			$ch = curl_init();
@@ -76,16 +72,18 @@ function sendInflux($s_value, $s_current, $rom, $name, $type){
 			curl_close ($ch);
 			
 			if ($status == 204) {
-				logs(date("Y-m-d H:i:s"),'Info',$rom." - Value sent to influxdb - ".$value);
+				logs(date("Y-m-d H:i:s"),'Info',$rom." - InfluxDB - Value sent- ".$value);
+			} elseif ($status == 400) {
+				logs(date("Y-m-d H:i:s"),'Info',$rom." - InfluxDB - Bad Request - ".$points);
+			} elseif ($status == 401) {
+				logs(date("Y-m-d H:i:s"),'Info',$rom." - Influxdb - Unauthorized.");
+			} elseif ($status == 413) {
+				logs(date("Y-m-d H:i:s"),'Info',$rom." - Influxdb - Request Entity Too Large.");
 			} else {
-				
-				logs(date("Y-m-d H:i:s"),'Error',$rom." - Error sending data to InfluxDB - ".$points);
+				logs(date("Y-m-d H:i:s"),'Error',$rom." - InfluxDB -  Error sending data - ".$points);
 			}
-
-		  //echo $status;
       } else {
-		  
-		  logs(date("Y-m-d H:i:s"),'Error',"Check InfluxDB configuration. ");
+		  logs(date("Y-m-d H:i:s"),'Error',"InfluxDB - Check  configuration. ");
 	  }
     } 
     catch (Exception $e) {
