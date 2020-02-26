@@ -72,13 +72,13 @@ function sendInflux($s_value, $s_current, $rom, $name, $type){
 			curl_close ($ch);
 			
 			if ($status == 204) {
-				logs(date("Y-m-d H:i:s"),'Info',$rom." - InfluxDB - Value sent- ".$value);
+				logs(date("Y-m-d H:i:s"),'Info',$rom." - InfluxDB - Value sent - ".$value);
 			} elseif ($status == 400) {
-				logs(date("Y-m-d H:i:s"),'Info',$rom." - InfluxDB - Bad Request - ".$points);
+				logs(date("Y-m-d H:i:s"),'Error',$rom." - InfluxDB - Bad Request - ".$points);
 			} elseif ($status == 401) {
-				logs(date("Y-m-d H:i:s"),'Info',$rom." - Influxdb - Unauthorized.");
+				logs(date("Y-m-d H:i:s"),'Error',$rom." - Influxdb - Unauthorized.");
 			} elseif ($status == 413) {
-				logs(date("Y-m-d H:i:s"),'Info',$rom." - Influxdb - Request Entity Too Large.");
+				logs(date("Y-m-d H:i:s"),'Error',$rom." - Influxdb - Request Entity Too Large.");
 			} else {
 				logs(date("Y-m-d H:i:s"),'Error',$rom." - InfluxDB -  Error sending data - ".$points);
 			}
