@@ -44,7 +44,7 @@ $mqtt->close();
 
 
 function procmsg($topic, $msg){
-		echo "Msg Recieved:\n";
+		echo "Msg Recieved: {$msg}\n";
 		echo "Topic: {$topic}\n\n";
 	//	echo "\t$msg\n\n";
 
@@ -73,7 +73,81 @@ function procmsg($topic, $msg){
     $gpio='';
     $local_gpio='';
     
-    if ($arr['3']=='gpio') {
+	
+	// Shelly devices
+	if ($arr['0']=='shellies') {
+		
+		echo "_____________________shellies____________________"."\n";
+		
+		// Check type of shelly device
+		
+		$t_type=(explode("-",$arr['1']));
+			foreach($t_type as $tt) {
+				$arr2[]=$tt;
+			}
+			
+			$type = $arr2['0']; //rgbw2, shelly2.5 or another shelly device
+			$id = $arr2['1']; //unique ID
+				
+				if ($type = 'rgbw2') {
+					
+					$reads = json_decode($output,true);
+					$rgbw2_mode = $reads["mode"];
+					$last = array_key_last($arr);
+					
+					if ( $arr[$last] == 'status' && $rgbw2_mode == 'white'){
+						
+						$channel = $arr[3] + 1;
+						$output = (int)$reads["ison"];
+						
+						echo "output = ".$output."\n";
+						echo "channel = ".$channel."\n";
+						echo "ison = ".$reads["ison"]."\n";
+						echo "mode = ".$reads["mode"]."\n";
+						echo "brightness = ".$reads["brightness"]."\n";
+						echo "power = ".$reads["power"]."\n";
+						echo "overpower = ".$reads["overpower"]."\n";
+						
+					} else if ( $arr[$last] == 'status' && $rgbw2_mode == 'color'){
+						
+						$output = (int)$reads["ison"];
+						
+						echo "output = ".$output."\n";
+						echo "ison = ".$reads["ison"]."\n";
+						echo "mode = ".$reads["mode"]."\n";
+						echo "red = ".$reads["red"]."\n";
+						echo "green = ".$reads["green"]."\n";
+						echo "blue = ".$reads["blue"]."\n";
+						echo "white = ".$reads["white"]."\n";
+						echo "gain = ".$reads["gain"]."\n";
+						echo "effect = ".$reads["effect"]."\n";
+						echo "power = ".$reads["power"]."\n";
+						echo "overpower = ".$reads["overpower"]."\n";
+						
+						
+					}
+					
+					$ip='';
+		
+					$name=$arr['1']; //rgbw2-XXXXXX
+					$type = $arr2['0']; //rgbw2
+					$id = $arr2['1']; // id = XXXXXX
+					
+					$local_device	=	'mqtt';
+					$local_type		=	$type;
+					$local_val		=	$output;
+					$local_name		=	$name;
+					$local_ip		=	$ip;
+					//$local_gpio	=	$gpio;
+					//$local_tskname = $tskname;
+					$local_rom=$local_name;
+					
+				}  
+			
+		
+		
+		
+	} else if ($arr['3']=='gpio') {
 		
 	$ip=$arr['1'];
 	$name=$arr['2'];

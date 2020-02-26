@@ -1,6 +1,7 @@
 <?php
 
 include("common/functions.php");
+
 // name:
 // type: temp, humid, relay, lux, press, humid, gas, water, elec, volt, amps, watt, trigger
 // device: ip, wireless, remote, gpio, i2c, usb
@@ -97,6 +98,7 @@ $local_ip='';
 $local_gpio='';
 $local_usb='';
 
+
 $dbr = new PDO("sqlite:".__DIR__."/dbf/nettemp.db") or die ("cannot open database");
 
 $sth = $dbr->query("SELECT * FROM nt_settings");
@@ -115,25 +117,14 @@ foreach ($result as $a) {
 	if($a['option']=='mail_topic') {
 		$mail_topic=$a['value'];
 	}
+	if($a['option']=='inflon') {
+		$influxon=$a['value'];
+	}
+}
+if ($influxon == 'on') {
+	include("common/influx_sender.php");
 }
 
-
-function adjust($val,$rom) { 
-	$dbr = new PDO("sqlite:".__DIR__."/dbf/nettemp.db") or die ("cannot open database");
-	$sthr = $dbr->query("SELECT * FROM adjust WHERE rom='$rom' ORDER by threshold ASC");
-    $row = $sthr->fetchAll();
-    foreach($row as $row) {
-		$threshold=$row['threshold'];
-		$end=$row['end'];
-		$add=$row['addvalue'];
-		if($val>=$threshold&&$val<$end)
-		{ 
-			$val=$val+$add;
-			break;
-		}
-    }
-    return "$val";
-}
 
 function scale($val,$type) {
 	global $scale;
@@ -259,16 +250,19 @@ function check($val,$type) {
 function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 	$file = "$rom.sql";
 	global $chmin;
+	global $influxon;
 	$dbr = new PDO("sqlite:".__DIR__."/dbf/nettemp.db") or die ("cannot open database");
 	if(file_exists(__DIR__."/db/".$file)&&filesize(__DIR__."/db/".$file)!=0){
 		$dbfr = new PDO("sqlite:".__DIR__."/db/$file");
-		$sthr = $dbr->query("SELECT stat_min,stat_max,rom,adj,tobase FROM sensors WHERE rom='$rom'");
+		$sthr = $dbr->query("SELECT stat_min,stat_max,rom,adj,tobase,influxdb,name  FROM sensors WHERE rom='$rom'");
 		$row = $sthr->fetchAll();
 		foreach($row as $row) {
 			$adj=$row['adj']; 
 			$stat_min=$row['stat_min'];
 			$stat_max=$row['stat_max'];
 			$to_base=$row['tobase'];
+			$to_influx=$row['influxdb'];
+			$iname=$row['name'];
 			
 			if ($type != 'host'){
 				$val=$val+$adj;  
@@ -279,7 +273,6 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 		if ( $c >= "1") {
 			if (is_numeric($val)) {
 				$val=scale($val,$type);
-				$val=adjust($val,$rom);
 				$val=check($val,$type);
 				if ($val != 'range'){
 					//// base
@@ -313,6 +306,11 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 									$dbfr->exec("INSERT OR IGNORE INTO def (value,current) VALUES ('$val','$current')") or die ("cannot insert to rom sql current\n" );	
 								}
 								
+								if ($to_influx == 'on' && $influxon == 'on'){				
+									sendInflux($val, $current, $rom, $iname, $type);
+									
+								}
+								
 								$dbr->exec("UPDATE sensors SET current='$current' WHERE rom='$rom'") or die ("cannot insert to current\n" );
 								
 								echo $rom." - Current value for counter updated ".$current." \n";
@@ -325,7 +323,15 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 									$dbfr->exec("INSERT OR IGNORE INTO def (value) VALUES ('$val')") or die ("cannot insert to rom sql\n" );
 									logs(date("Y-m-d H:i:s"),'Info',$rom." - Value in base updated - ".$val);
 								}
+								
+								if ($to_influx == 'on' && $influxon == 'on'){				
+									
+									sendInflux($val, $current, $rom, $iname, $type);
+								}
 							}
+							
+														
+							
 							//sum,current for counters
 							if (in_array($type, $arraycounters)){
 								$dbr->exec("UPDATE sensors SET sum='$val'+sum WHERE rom='$rom'") or die ("cannot insert to status\n" );
@@ -343,6 +349,11 @@ function db($rom,$val,$type,$device,$current,$ip,$gpio,$i2c,$usb,$name){
 							$dbfr->exec("INSERT OR IGNORE INTO def (value) VALUES ('$val')") or die (date("Y-m-d H:i:s")." ERROR: Cannot insert to rom sql, time\n");
 							echo date("Y-m-d H:i:s")." ".$rom." ".$val." Value in base updated \n";
 							logs(date("Y-m-d H:i:s"),'Info',$rom." - Value in base updated - ".$val);
+						}
+						
+						if ($to_influx == 'on' && $influxon == 'on'){				
+							
+							sendInflux($val, $current, $rom, $iname, $type);
 						}
 					}
 					else {
